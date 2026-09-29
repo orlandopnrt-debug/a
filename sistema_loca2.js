@@ -6,8 +6,6 @@ Pontos que usei IA:
 - lembrar estrutura forEach
 - tirar dúvida da sintaxe do find e do reduce
 - comentarios
-- usar o prompt no Node (prompt-sync)
-- montar o menu com while (true) e switch/case (item s)
 - funções de apagar dos arrays (item r)
 */
 
@@ -119,21 +117,47 @@ locacoes.forEach((locacao) => {
 // listar filmes (forEach)
 function listarFilmes() {
   filmes.forEach((filme, i) => {
-    console.log(i + 1, "-", filme.titulo, "|", filme.genero, "| R$", filme.precoDiaria, "| Estoque:", filme.estoqueDisponivel);
+    console.log(
+      i + 1,
+      "-",
+      filme.titulo,
+      "|",
+      filme.genero,
+      "| R$",
+      filme.precoDiaria,
+      "| Estoque:",
+      filme.estoqueDisponivel,
+    );
   });
 }
 
 // listar clientes (forEach)
 function listarClientes() {
   clientes.forEach((cliente, i) => {
-    console.log(i + 1, "-", cliente.nome, "|", cliente instanceof ClienteVip ? "VIP" : "Comum");
+    console.log(
+      i + 1,
+      "-",
+      cliente.nome,
+      "|",
+      cliente instanceof ClienteVip ? "VIP" : "Comum",
+    );
   });
 }
 
 // listar locações (forEach)
 function listarLocacoes() {
   locacoes.forEach((locacao, i) => {
-    console.log(i + 1, "-", locacao.cliente.nome, "|", locacao.filme.titulo, "|", locacao.dias, "dia(s) | R$", locacao.calcularValor().toFixed(2));
+    console.log(
+      i + 1,
+      "-",
+      locacao.cliente.nome,
+      "|",
+      locacao.filme.titulo,
+      "|",
+      locacao.dias,
+      "dia(s) | R$",
+      locacao.calcularValor().toFixed(2),
+    );
   });
 }
 
@@ -143,11 +167,6 @@ function cadastrarFilme() {
   const precoDiaria = parseFloat(prompt("Preço da diária: "));
   const estoque = parseInt(prompt("Estoque: "));
 
-  if (!titulo || !genero || isNaN(precoDiaria) || isNaN(estoque)) {
-    console.log("Dados inválidos.");
-    return;
-  }
-
   filmes.push(new Filme(titulo, genero, precoDiaria, estoque));
   console.log("Filme cadastrado.");
 }
@@ -155,11 +174,6 @@ function cadastrarFilme() {
 function cadastrarCliente() {
   const nome = prompt("Nome: ");
   const tipo = prompt("Tipo (1 = Comum, 2 = VIP): ");
-
-  if (!nome) {
-    console.log("Nome inválido.");
-    return;
-  }
 
   if (tipo === "1") {
     clientes.push(new Cliente(nome));
@@ -218,34 +232,18 @@ function apagarFilme() {
     return;
   }
 
-  const filme = filmes[numero - 1];
-
-  // não apaga se tiver locação com esse filme
-  const temLocacao = locacoes.some((locacao) => locacao.filme === filme);
-  if (temLocacao) {
-    console.log("Esse filme tem locação, apague a locação primeiro.");
-    return;
-  }
-
   filmes.splice(numero - 1, 1);
   console.log("Filme apagado.");
 }
 
 function apagarCliente() {
   listarClientes();
-  const numero = parseInt(prompt("Número do cliente para apagar (0 cancela): "));
+  const numero = parseInt(
+    prompt("Número do cliente para apagar (0 cancela): "),
+  );
 
   if (isNaN(numero) || numero < 1 || numero > clientes.length) {
     console.log("Nenhum cliente apagado.");
-    return;
-  }
-
-  const cliente = clientes[numero - 1];
-
-  // não apaga se tiver locação desse cliente
-  const temLocacao = locacoes.some((locacao) => locacao.cliente === cliente);
-  if (temLocacao) {
-    console.log("Esse cliente tem locação, apague a locação primeiro.");
     return;
   }
 
@@ -255,7 +253,9 @@ function apagarCliente() {
 
 function apagarLocacao() {
   listarLocacoes();
-  const numero = parseInt(prompt("Número da locação para apagar (0 cancela): "));
+  const numero = parseInt(
+    prompt("Número da locação para apagar (0 cancela): "),
+  );
 
   if (isNaN(numero) || numero < 1 || numero > locacoes.length) {
     console.log("Nenhuma locação apagada.");
@@ -332,8 +332,12 @@ function faturamentoTotal() {
 
 // o) some, p) every e q) Locacao.totalLocacoes
 function resumo() {
-  const temFilmeEsgotado = filmes.some((filme) => filme.estoqueDisponivel === 0);
-  const todosSaoVip = clientes.every((cliente) => cliente instanceof ClienteVip);
+  const temFilmeEsgotado = filmes.some(
+    (filme) => filme.estoqueDisponivel === 0,
+  );
+  const todosSaoVip = clientes.every(
+    (cliente) => cliente instanceof ClienteVip,
+  );
 
   console.log("Total de Locações:", Locacao.totalLocacoes);
   console.log("Existe filme esgotado?", temFilmeEsgotado);
